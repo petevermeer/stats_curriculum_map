@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Intro Stats Curriculum Map</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <style>
+        #map {
+            width: 70%;
+            height: 600px;
+            float: left;
+        }
+        #sidebar {
+            width: 28%;
+            height: 600px;
+            float: right;
+            padding: 10px;
+            background-color: white;
+            border: 1px solid #ccc;
+            overflow-y: auto;
+        }
+        .custom-marker {
+            background-color: #ffffff;
+            color: black;
+            padding: 5px 10px;
+            border-radius: 8px;
+            text-align: center;
+            display: inline-block;
+            width: 80px;
+            cursor: pointer;
+        }
+        .node-status {
+            font-weight: bold;
+        }
+        #knowledge-check-modal {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            border: 2px solid #ccc;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            width: 300px;
+        }
+        #modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+        }
+        .correct {
+            background-color: lightgreen;
+        }
+        .incorrect {
+            background-color: lightcoral;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Link to the concepts.js file -->
+    <script src="concepts_small.js">
+    // Sample data structure for nodes and edges
+    //    const concepts = [
+    //          { id: 1, name: 'Mean', lat: 0.223, lon: 0.124, definition: 'The mean is the average of a set of numbers.', related: [2, 3, 4], questions:[{question:'What is the mean of [2, 4, 6]?', options: ['4', '5', '6'], correct: '4'}] },
+    //          ...
+    //    ];    
+    </script>
+    <header>
+        <h1>Intro Stats Curriculum Map</h1>
+    </header>
+    <div id="map"></div>
+    <div id="sidebar">
+        <h3>Concept Details</h3>
+        <div id="concept-info">
+            <p><span class="node-status">Select a concept for more information.</span></p>
+        </div>
+        <div>
+            <p>© Jun 23, 2022 OpenStax. Textbook content produced by OpenStax is licensed under a <a href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution License</a> .</p>
+            <p>Content for this webapp is from <a href="https://openstax.org/books/introductory-statistics/pages/1-introduction">Introductory Statistics</a></p>
+        </div>
+    </div>
+
+    <footer>
+        <p>© 2022 OpenStax. Content licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC Attribution License</a>.</p>
+        <p>Source: <a href="https://openstax.org/books/introductory-statistics/pages/1-introduction" target="_blank">Introductory Statistics</a></p>
+    </footer>
+    <div id="modal-overlay"></div>
+    <div id="knowledge-check-modal">
+        <h4 id="question-text"></h4>
+        <div id="options-container"></div>
+        <button onclick="closeModal()">Close</button>
+    </div>
+
+    <script>
+
+        // Initialize the map
+        const map = L.map('map').setView([0, 0], 11);
+
+        //utility fn to help find specific lats and lons
+        map.on('dblclick', function(e) {
+            // Get the latitude and longitude of the clicked point
+            var lat = e.latlng.lat;
+            var lon = e.latlng.lng;
+
+            // Show an alert with the latitude and longitude
+            alert('Latitude: ' + lat + '\nLongitude: ' + lon);
+        });
+
+        // icon width based on name length
+        function iconWidthCalc(nm){
+            return 9*nm.length
+        }
+        
+        // Function to create custom markers as styled divs
+        concepts.forEach(concept => {
+            const marker = L.divIcon({
+                className: 'custom-marker',
+                html: `<div id="concept-${concept.id}">${concept.name}</div>`,
+                iconSize: [iconWidthCalc(concept.name),20],
+                
+            });
+
+            const markerElement = L.marker([concept.lat, concept.lon], { icon: marker/*,draggable:true*/ }).addTo(map);
+            markerElement.on('mouseover', () => showConceptDetails(concept));
+            markerElement.on('click', () => showKnowledgeCheck(concept.id));
+            //markerElement.draggable = true;
+//            markerElement.on('mouseover', () => markerElement.bindPopup(`<strong>${concept.name}</strong><br>${concept.definition}`).openPopup());
+        });
+
+        // Draw lines between related concepts
+        concepts.forEach(concept => {
+            concept.related.forEach(relatedId => {
+                const relatedConcept = concepts.find(c => c.id === relatedId);
+                if (relatedConcept) {
+                    L.polyline([
+                        [concept.lat, concept.lon],
+                        [relatedConcept.lat, relatedConcept.lon]
+                    ], { color: 'black', weight: 1 }).addTo(map);
+                }
+            });
+        });
+
+        // Function to show concept info in sidebar
+        function showConceptDetails(concept) {
+            const sidebar = document.getElementById('concept-info');
+            sidebar.innerHTML = `
+                <h4>${concept.name}</h4>
+                <p>${concept.definition}</p>
+                <p><strong>Related Concepts:</strong> ${concept.related.map(id => concepts.find(c => c.id === id).name).join(', ')}</p>
+                <button onclick="showKnowledgeCheck(${concept.id})">Knowledge Check</button>
+            `;
+        }
+
+        //Function to return a random question
+        function randomQuestion(questionArray){
+            randomIndex = Math.floor( Math.random() * questionArray.length)
+            return questionArray[randomIndex]
+        }
+        
+        // Function to display the modal for the knowledge check
+        function showKnowledgeCheck(conceptId) {
+            const concept = concepts.find(c => c.id === conceptId);
+            if (concept) {
+                selectedQuestion = randomQuestion(concept.questions)
+                document.getElementById('question-text').innerText = selectedQuestion.question;
+                const optionsContainer = document.getElementById('options-container');
+                optionsContainer.innerHTML = selectedQuestion.options.map(option => `<button onclick="checkAnswer('${option}', '${selectedQuestion.correct}', ${conceptId})">${option}</button>`).join('<br>');
+
+                document.getElementById('modal-overlay').style.display = 'block';
+                document.getElementById('knowledge-check-modal').style.display = 'block';
+            }
+        }
+
+        // Function to check if the answer is correct and mark nodes
+        function checkAnswer(selected, correct, conceptId) {
+            const conceptElement = document.getElementById(`concept-${conceptId}`);
+            if (selected === correct) {
+//                alert('Correct!');
+                conceptElement.classList.remove('incorrect');
+                conceptElement.classList.add('correct');
+            } else {
+//                alert('Incorrect. Try again!');
+                conceptElement.classList.remove('correct');
+                conceptElement.classList.add('incorrect');
+                // Mark connected nodes as incorrect
+                const concept = concepts.find(c => c.id === conceptId);
+                concept.related.forEach(relatedId => {
+                    const relatedElement = document.getElementById(`concept-${relatedId}`);
+                    if (relatedElement) {
+                        conceptElement.classList.remove('correct');
+                        relatedElement.classList.add('incorrect');
+                    }
+                });
+            }
+            closeModal();
+        }
+
+        // Function to close the modal
+        function closeModal() {
+            document.getElementById('modal-overlay').style.display = 'none';
+            document.getElementById('knowledge-check-modal').style.display = 'none';
+        }
+    </script>
+</body>
+</html>
