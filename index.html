@@ -69,11 +69,7 @@
 <body>
     <!-- Link to the concepts.js file -->
     <script src="concepts_small.js">
-    // Sample data structure for nodes and edges
-    //    const concepts = [
-    //          { id: 1, name: 'Mean', lat: 0.223, lon: 0.124, definition: 'The mean is the average of a set of numbers.', related: [2, 3, 4], questions:[{question:'What is the mean of [2, 4, 6]?', options: ['4', '5', '6'], correct: '4'}] },
-    //          ...
-    //    ];    
+    // See file for data structure (node/edge) format
     </script>
     <header>
         <h1>Intro Stats Curriculum Map</h1>
@@ -104,7 +100,7 @@
     <script>
 
         // Initialize the map
-        const map = L.map('map').setView([0, 0], 11);
+        const map = L.map('map').setView([0.3, 0.4], 10);
 
         //utility fn to help find specific lats and lons
         map.on('dblclick', function(e) {
