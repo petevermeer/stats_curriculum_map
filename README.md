@@ -10,7 +10,7 @@ This resource is a single-file interactive web application for students to test 
 
 The main file "index.html" uses client-side browser capability to display a webapp that consists of:
 
-1. a slippy map to navigate between statistics concepts presented as nodes in a graph
+1. a [Leaflet](https://github.com/Leaflet/Leaflet) slippy map to navigate between statistics concepts presented as nodes in a graph
 
 2. an interactive *concept details* section that displays concept information on hover and
 
