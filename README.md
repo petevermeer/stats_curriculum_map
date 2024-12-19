@@ -6,7 +6,7 @@
 
 This resource is a single-file interactive web application for students to test their knowledge of key concepts found in [Openstax Introductory Statistics Textbook](https://openstax.org/details/books/introductory-statistics/).
 
-[Click here for demo](https://petevermeer.github.io/stats_curriculum_map/)
+<a href="https://petevermeer.github.io/stats_curriculum_map/" target="_blank">Click here for demo</a>
 
 The main file "index.html" uses client-side browser capability to display a webapp that consists of:
 
