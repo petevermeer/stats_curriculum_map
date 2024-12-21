@@ -14,12 +14,14 @@ const concepts = [
     id:20, name:'Parameter', lat:0.1, lon:0.6, definition:'a number that is used to represent a population characteristic and that generally cannot be determined easily', 
     related:[38,22], 
     questions:[
-        {question:'answer option 1',
+        {question:'Use the following information to answer the next three exercises: A Lake Tahoe Community College instructor is interested in the mean number of days Lake Tahoe Community College math students are absent from class during a quarter. What is the population she is interested in?',
          options:[
-            'option1',
-             'option2',
-             'option3'],
-         correct:'option1'}]
+            'all Lake Tahoe Community College students',
+             'all Lake Tahoe Community College English students',
+             'all Lake Tahoe Community College students in her classes',
+             'all Lake Tahoe Community College math students'
+         ],
+         correct:'all Lake Tahoe Community College math students'}]
 },
 {id:22, name:'Population', lat:0.2, lon:0.7, definition:'all individuals, objects, or measurements whose properties are being studied', related:[20,32], questions:[{question:'answer option 1',options:['option1','option2','option3'],correct:'option1'}]},
 {id:25, name:'Qualitative Data', lat:0.3, lon:0.1, definition:'an attribute whose value is indicated by a label', related:[9,42], questions:[{question:'answer option 1',options:['option1','option2','option3'],correct:'option1'}]},
