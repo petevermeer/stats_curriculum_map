@@ -22,6 +22,18 @@
             background-color: #9DCFFC;
             padding: 5px;
         }
+        button{
+            background-color: #184171;
+            border: none;
+            color: white;
+            padding: 2px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+        }
         #app{
             width:100%;
             height: 600px;
@@ -60,7 +72,7 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background-color: lightcyan;
+            background-color: #9dcffc;
             border: 2px solid #ccc;
             border-radius: 25px;
             padding: 20px;
@@ -116,10 +128,15 @@
     <div id="knowledge-check-modal">
         <h4 id="question-text"></h4>
         <div id="options-container"></div>
-        <button onclick="closeModal()">Close</button>
+        <br>
+        <button onclick="closeModal()" style="background-color: #6e7880;">Close</button>
     </div>
 
     <script>
+        //warn if screen too small
+        if (window.innerWidth < 960) {
+            showWarning();
+        }
 
         // Initialize the map
         const map = L.map('map').setView([0.3, 0.4], 10);
@@ -197,6 +214,16 @@
                 document.getElementById('modal-overlay').style.display = 'block';
                 document.getElementById('knowledge-check-modal').style.display = 'block';
             }
+        }
+
+        //function to show warning if screen is too small
+        function showWarning() {
+            document.getElementById('question-text').innerText = "This application is not optimized for mobile. Try viewing on a desktop browser. Sorry!"
+            //clear any existing options
+            document.getElementById('options-container').innerText = "";
+            document.getElementById('modal-overlay').style.display = 'block';
+            document.getElementById('knowledge-check-modal').style.display = 'block';
+            
         }
 
         // Function to check if the answer is correct and mark nodes
