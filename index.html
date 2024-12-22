@@ -5,18 +5,38 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Intro Stats Curriculum Map</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <!--TODO: Think about using bootstrap for responsive css to hide concept details on mobile-->
+    <!--<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>-->
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
     <style>
+        body{
+            font-family: 'Roboto', sans-serif;
+        }
+        header{
+            background-color: rgb(32,89,153);
+            color: white;
+            padding: 5px;
+        }
+        footer{
+            background-color: #9DCFFC;
+            padding: 5px;
+        }
+        #app{
+            width:100%;
+            height: 600px;
+        }
         #map {
             width: 70%;
             height: 600px;
             float: left;
+            
         }
         #sidebar {
-            width: 28%;
+            width: 29%;
             height: 600px;
             float: right;
-            padding: 10px;
+            /*padding-left: 10px;*/
             background-color: white;
             border: 1px solid #ccc;
             overflow-y: auto;
@@ -34,20 +54,21 @@
         .node-status {
             font-weight: bold;
         }
-        #knowledge-check-modal {
+        #knowledge-check-modal { 
             display: none;
             position: fixed;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background-color: white;
+            background-color: lightcyan;
             border: 2px solid #ccc;
+            border-radius: 25px;
             padding: 20px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
             z-index: 1000;
             width: 300px;
         }
-        #modal-overlay {
+        #modal-overlay { /*a grey tranparent box over the site*/
             display: none;
             position: fixed;
             top: 0;
@@ -72,20 +93,21 @@
     // See file for data structure (node/edge) format
     </script>
     <header>
-        <h1>Intro Stats Curriculum Map</h1>
+        <h1><b>INTRO TO STATS CURRICULUM MAP</b></h1>
     </header>
-    <div id="map"></div>
-    <div id="sidebar">
-        <h3>Concept Details</h3>
-        <div id="concept-info">
-            <p><span class="node-status">Select a concept for more information.</span></p>
-        </div>
-        <div>
-            <p>© Jun 23, 2022 OpenStax. Textbook content produced by OpenStax is licensed under a <a href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution License</a> .</p>
-            <p>Content for this webapp is from <a href="https://openstax.org/books/introductory-statistics/pages/1-introduction">Introductory Statistics</a></p>
+    <div id="app">
+        <div id="map"></div>
+        <div id="sidebar">
+            <h3>Concept Details</h3>
+            <div id="concept-info">
+                <p><span class="node-status">Select a concept for more information.</span></p>
+            </div>
+            <div>
+                <p>© Jun 23, 2022 OpenStax. Textbook content produced by OpenStax is licensed under a <a href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution License</a> .</p>
+                <p>Content for this webapp is from <a href="https://openstax.org/books/introductory-statistics/pages/1-introduction">Introductory Statistics</a></p>
+            </div>
         </div>
     </div>
-
     <footer>
         <p>© 2022 OpenStax. Content licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC Attribution License</a>.</p>
         <p>Source: <a href="https://openstax.org/books/introductory-statistics/pages/1-introduction" target="_blank">Introductory Statistics</a></p>
